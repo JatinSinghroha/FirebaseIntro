@@ -12,6 +12,8 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/messagesRV"
+        tools:listitem="@layout/item_message_rv"
+        tools:itemCount="15"
         android:padding="16dp"/>
 
     <View
@@ -31,6 +33,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:padding="8dp"
+            android:adjustViewBounds="true"
             android:src="@drawable/ic_outline_image_24"
             android:layout_gravity="center_vertical"/>
 

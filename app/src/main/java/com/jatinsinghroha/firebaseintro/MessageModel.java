@@ -2,15 +2,37 @@ package com.jatinsinghroha.firebaseintro;
 
 public class MessageModel {
 
-    String message, senderID, senderName, picURL;
+    String message, senderID, senderName, picURL, senderPhoneNum, senderEmail;
     long sendTime = System.currentTimeMillis();
 
-    public MessageModel(String message, String senderID, String senderName, String picURL, long sendTime) {
+    public MessageModel() {
+
+    }
+
+    public MessageModel(String message, String senderID, String senderName, String picURL, String senderPhoneNum, String senderEmail, long sendTime) {
         this.message = message;
         this.senderID = senderID;
         this.senderName = senderName;
         this.picURL = picURL;
+        this.senderPhoneNum = senderPhoneNum;
+        this.senderEmail = senderEmail;
         this.sendTime = sendTime;
+    }
+
+    public String getSenderPhoneNum() {
+        return senderPhoneNum;
+    }
+
+    public void setSenderPhoneNum(String senderPhoneNum) {
+        this.senderPhoneNum = senderPhoneNum;
+    }
+
+    public String getSenderEmail() {
+        return senderEmail;
+    }
+
+    public void setSenderEmail(String senderEmail) {
+        this.senderEmail = senderEmail;
     }
 
     public String getMessage() {
