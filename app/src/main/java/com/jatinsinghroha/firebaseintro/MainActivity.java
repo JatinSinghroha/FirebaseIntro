@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +32,6 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView sendMessageBtn;
 
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference messagesDBRef;
+    private DatabaseReference messagesDBRef, usersDBRef;
 
     private StorageReference mChatPhotosStorageReference;
 
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView messagesRV;
 
     FirebaseUser user;
+
+    String userName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         messagesRV = findViewById(R.id.messagesRV);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        usersDBRef = mFirebaseDatabase.getReference().child("users");
         messagesDBRef = mFirebaseDatabase.getReference().child("messages");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -102,12 +106,49 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "User Phone - "+user.getPhoneNumber(), Toast.LENGTH_LONG).show();
 
                 this.user = user;
+
+                initViews();
+
+                if (user.getDisplayName() == null || user.getDisplayName().trim().isEmpty()) {
+                    askForUserName();
+                } else {
+                    saveUserDetails(user.getDisplayName());
+                    userName = user.getDisplayName();
+                }
             }
 
         };
 
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
 
+    private void askForUserName() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+
+        builder.setTitle("Enter your name");
+        builder.setCancelable(false);
+
+        final EditText nameET = new EditText(this);
+        nameET.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        builder.setPositiveButton("SAVE", (dialog, which) -> {
+            String name = nameET.getText().toString();
+            userName = name;
+            saveUserDetails(name);
+        });
+
+        builder.setView(nameET);
+
+        builder.show();
+    }
+
+    private void saveUserDetails(String name) {
+        User object = new User(user.getUid(), name, user.getEmail(), user.getPhoneNumber());
+
+        usersDBRef.child(user.getUid()).setValue(object);
+    }
+
+    private void initViews() {
         messagesET.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -134,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                         new MessageModel(
                                 messagesET.getText().toString(),
                                 user.getUid(),
-                                user.getDisplayName(),
+                                userName,
                                 null,
                                 user.getPhoneNumber(),
                                 user.getEmail(),
@@ -146,9 +187,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Please enter a message", Toast.LENGTH_SHORT).show();
             }
         });
-
-        setUpRV();
-
 
         pickPhotoIV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +201,8 @@ public class MainActivity extends AppCompatActivity {
                         REQUEST_CODE_PICK_IMAGE);
             }
         });
+
+        setUpRV();
     }
 
     private void setUpRV() {
@@ -204,8 +244,6 @@ public class MainActivity extends AppCompatActivity {
 
         messagesRV.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-        messagesRV.addItemDecoration(new DividerItemDecoration(MainActivity.this, RecyclerView.VERTICAL));
-
     }
 
     @Override
@@ -234,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                                     new MessageModel(
                                             null,
                                             user.getUid(),
-                                            user.getDisplayName(),
+                                            userName,
                                             downloadURL.toString(),
                                             user.getPhoneNumber(),
                                             user.getEmail(),
@@ -246,4 +284,8 @@ public class MainActivity extends AppCompatActivity {
                     });
         }
     }
+
+
+
+
 }
