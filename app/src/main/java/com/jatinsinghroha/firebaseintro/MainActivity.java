@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveUserDetails(String name) {
-        User object = new User(user.getUid(), name, user.getEmail(), user.getPhoneNumber());
+        User object = new User(user.getUid(), name, user.getPhoneNumber());
 
         usersDBRef.child(user.getUid()).setValue(object);
     }
