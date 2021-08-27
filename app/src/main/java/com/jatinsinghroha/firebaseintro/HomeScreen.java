@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -38,10 +39,14 @@ public class HomeScreen extends AppCompatActivity {
     private final static int REQUEST_CODE_SIGN_IN = 111;
     String userName = "";
 
+    FloatingActionButton contactsFAB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        contactsFAB = findViewById(R.id.contactsFAB);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -105,6 +110,8 @@ public class HomeScreen extends AppCompatActivity {
         };
 
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
+        contactsFAB.setOnClickListener(v -> startActivity(new Intent(HomeScreen.this, ContactsScreen.class)));
     }
 
     private void askForUserName() {

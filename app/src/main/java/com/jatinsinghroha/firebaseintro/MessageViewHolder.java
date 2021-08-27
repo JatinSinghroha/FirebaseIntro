@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
 
-    TextView othersMessageTV, othersSenderDetailsTV, othersSendTimeTV, ownMessageTV, ownSendTimeTV;
+    TextView othersMessageTV, othersSendTimeTV, ownMessageTV, ownSendTimeTV;
     ImageView othersMessageImageIV, ownMessageImageIV;
     LinearLayout othersMessageLayout, ownMessageLayout;
 
@@ -28,7 +28,6 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         othersMessageTV = itemView.findViewById(R.id.othersMessageTV);
-        othersSenderDetailsTV = itemView.findViewById(R.id.othersSenderDetails);
         othersMessageImageIV = itemView.findViewById(R.id.othersMessageImageIV);
         othersSendTimeTV = itemView.findViewById(R.id.othersMessageSendTime);
 
@@ -40,9 +39,9 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         ownMessageLayout = itemView.findViewById(R.id.ownMessageLayout);
     }
 
-    public void bind(MessageModel message, boolean isItTheSameUser) {
+    public void bind(MessageModel message) {
 
-        if (isItTheSameUser) {
+        if (message.sentByOwn) {
             othersMessageLayout.setVisibility(View.GONE);
             ownMessageLayout.setVisibility(View.VISIBLE);
 
@@ -72,19 +71,6 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
                 Glide.with(othersMessageImageIV).load(message.picURL).into(othersMessageImageIV);
             }
 
-            String senderDetails = "";
-
-            if (isItTheSameUser) {
-                senderDetails = "You";
-            } else if (message.senderName != null && !message.senderName.isEmpty()) {
-                senderDetails = message.senderName;
-            } else if (message.senderPhoneNum != null && !message.senderPhoneNum.isEmpty()) {
-                senderDetails = message.senderPhoneNum;
-            } else if (message.senderEmail != null && !message.senderEmail.isEmpty()) {
-                senderDetails = message.senderEmail;
-            }
-
-            othersSenderDetailsTV.setText(senderDetails);
             othersSendTimeTV.setText(new SimpleDateFormat("d MMM, yyyy").format(message.sendTime));
 
         }

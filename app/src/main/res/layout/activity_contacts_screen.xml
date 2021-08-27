@@ -13,4 +13,5 @@
         android:id="@+id/contactsRV"
         tools:listitem="@layout/item_contact_rv"
         />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

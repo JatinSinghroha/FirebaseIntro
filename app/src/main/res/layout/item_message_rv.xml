@@ -30,13 +30,6 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:padding="4dp"
-        tools:text="Jatin"
-        android:id="@+id/othersSenderDetails"/>
 
     <ImageView
         android:layout_width="wrap_content"
