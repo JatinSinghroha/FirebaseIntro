@@ -96,6 +96,8 @@ public class HomeScreen extends AppCompatActivity implements RecentChatsAdapter.
 
                 this.user = user;
 
+                ownMessageDBRef = mFirebaseDatabase.getReference().child("messages/" + user.getUid());
+
                 initViews();
 
                 DatabaseReference userAccountDB = usersDBRef.child(user.getUid());
@@ -161,11 +163,9 @@ public class HomeScreen extends AppCompatActivity implements RecentChatsAdapter.
     }
 
     private void initViews() {
-        ownMessageDBRef = mFirebaseDatabase.getReference().child("messages/" + user.getUid());
-
         Log.e(TAG, ownMessageDBRef.toString());
 
-        ownMessageDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        ownMessageDBRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 getRecentMessages((Map<String,Map<String, MessageModel>>) snapshot.getValue());
@@ -240,6 +240,7 @@ public class HomeScreen extends AppCompatActivity implements RecentChatsAdapter.
         Collections.sort(listOfRecentChats, (chat1, chat2) -> (int) (chat2.chatTime - chat1.chatTime));
         recentChatsRV.setLayoutManager(new LinearLayoutManager(this));
         recentChatsRV.setAdapter(new RecentChatsAdapter(listOfRecentChats, this));
+
     }
 
 
