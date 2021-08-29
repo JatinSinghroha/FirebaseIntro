@@ -2,7 +2,7 @@ package com.jatinsinghroha.firebaseintro;
 
 public class User {
 
-    String uid, userName, userPhoneNum;
+    String uid, userName="", userPhoneNum;
 
     public User() {
 

@@ -6,10 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".HomeScreen">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recentChatsRV"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:paddingHorizontal="16dp"
+            android:background="@color/teal_700"
+            android:layout_height="?attr/actionBarSize">
+
+            <TextView
+                android:id="@+id/chatContactName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recent Chats"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recentChatsRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_recent_char_rv"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/contactsFAB"

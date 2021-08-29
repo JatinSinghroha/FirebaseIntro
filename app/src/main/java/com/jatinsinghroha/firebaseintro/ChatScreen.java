@@ -232,4 +232,5 @@ public class ChatScreen extends AppCompatActivity {
                     });
         }
     }
+
 }
