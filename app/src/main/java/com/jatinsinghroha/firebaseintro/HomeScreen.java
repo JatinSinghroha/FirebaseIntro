@@ -169,6 +169,11 @@ public class HomeScreen extends AppCompatActivity implements RecentChatsAdapter.
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 getRecentMessages((Map<String,Map<String, MessageModel>>) snapshot.getValue());
+
+                /**
+                 * Map Key = 81l8xzS4FCPtL8tnedJn9ugW3zR2
+                 * Map Value = Map<Mi7KwwjIq5EhP-kQOOe, MessageModel>.....12 such maps
+                 */
             }
 
             @Override
@@ -178,6 +183,10 @@ public class HomeScreen extends AppCompatActivity implements RecentChatsAdapter.
         });
 
     }
+
+    //List<List<String>>
+
+    //2 size = 2 * List<String>
 
     private void getRecentMessages(Map<String, Map<String, MessageModel>> allMessagesMap) {
 
